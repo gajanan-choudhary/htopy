@@ -31,9 +31,11 @@ OS/architecture-dependent data types which, you may yourself have to dig into
 for your system and find the base type of. See the examples for help.
 
 ## Features
-List of features ready and TODOs for future development
+List of features that are ready:
 * Partially automates writing the `ctypes`-wrapped headers
 * User decides how deep the C code is wrapped into Python
+* Compiler-flag-dependent structs can be smartly dealt with
+* With some clever hacks, significant chunks of C++ can also be wrapped
 
 To-do list:
 * Complete automation is the ultimate goal
@@ -47,7 +49,7 @@ Project is: _in progress_.
 ## License
 The licensing spirit of this code is very much same as that of
 [SWIG](http://www.swig.org/legal.html), that is, the `htopy` source code is to
-remain GPL'd, whereas `htopy` output is free for users based on their
+remain GPL'd, whereas `htopy` output is free for users to use based on their
 choice/requirements. Note that the `htopy`-generated output code for your input
 C software may be governed by the licensing terms of that C software.
 
