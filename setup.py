@@ -9,7 +9,7 @@ with open('LICENSE') as f:
     license = f.read()
 
 
-htopy_cmds = ['htopy = htopy.htopy_main:main']
+htopy_cmds = ['htopy = htopy.__main__:main']
 
 setup(
     name='htopy',
