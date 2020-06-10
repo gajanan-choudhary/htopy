@@ -8,6 +8,9 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+
+htopy_cmds = ['htopy = htopy.htopy_main:main']
+
 setup(
     name='htopy',
     version='0.1.0',
@@ -19,5 +22,6 @@ setup(
     url='https://github.com/gajanan-choudhary/htopy',
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
+    entry_points={'console_scripts': htopy_cmds},
     package_data={'': ['*.sh']},
 )

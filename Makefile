@@ -10,11 +10,11 @@ clean:
 	rm -rf build/
 
 all:
-	pip install -r requirements.txt
+	#pip install -r requirements.txt
 	python setup.py build
 
 install:
-	pip install -r requirements.txt
+	#pip install -r requirements.txt
 	pip install .
 
 uninstall:
