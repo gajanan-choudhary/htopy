@@ -1,4 +1,4 @@
-.PHONY: init test clean all install uninstall
+.PHONY: init test clean all docs install uninstall
 
 init:
 	python setup.py build
@@ -12,6 +12,9 @@ clean:
 all:
 	#pip install -r requirements.txt
 	python setup.py build
+
+docs:
+	sphinx-apidoc -o docs htopy
 
 install:
 	#pip install -r requirements.txt
