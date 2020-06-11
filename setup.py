@@ -21,7 +21,7 @@ setup(
     author_email='gajananchoudhary91@gmail.com',
     url='https://github.com/gajanan-choudhary/htopy',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=find_packages(exclude=('tests', 'tests.testinputs', 'docs')),
     entry_points={'console_scripts': htopy_cmds},
     package_data={'': ['*.sh']},
 )
