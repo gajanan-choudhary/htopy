@@ -20,6 +20,7 @@
 Module for parsing command line arguments to htopy.
 """
 
+from __future__ import print_function
 import os
 import sys
 import argparse as ap
@@ -99,7 +100,7 @@ if __name__=="__main__":
         args = parse_args()
         print(args)
     except:
-        print 'Try $ python parse_args.py -h'
+        print('Try $ python parse_args.py -h')
 
-    print
+    print()
 

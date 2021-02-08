@@ -16,9 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import subprocess
-import StringIO
+try:
+    from StringIO import StringIO ## for Python 2
+except ImportError:
+    from io import StringIO ## for Python 3
 import re
 
 from htopy.colors import colorClass as color
@@ -54,14 +58,14 @@ class Htopy:
         for hfile in os.listdir(self.rootDir):
           if hfile.endswith(self.interimFileExtension):
             pyfile = re.split('[^a-zA-Z0-9_]',hfile)[0]+self.outFileExtension
-            print '\n'+color.PURPLE+'Processing file: '+hfile+color.NONE #filename
+            print('\n'+color.PURPLE+'Processing file: '+hfile+color.NONE) #filename
 
             # Calling sed script to strip header file of its comments.
             bashcommand = ['cat ' + hfile]
             strippedhfilecontent = subprocess.Popen(bashcommand,stdout=subprocess.PIPE,shell=True).communicate()[0]
 
-            #print strippedhfilecontent
-            buf = StringIO.StringIO(strippedhfilecontent)
+            #print(strippedhfilecontent)
+            buf = StringIO(strippedhfilecontent.decode('utf-8'))
             with open(pyfile, 'w') as writer:
               writer.write('#!/usr/bin/python\n')
               writer.write('import ctypes\n')
@@ -80,7 +84,7 @@ class Htopy:
               writer.write('\n##############################################################################################\n')
               writer.write('if (__name__ == \'__main__\'):\n')
               writer.write('    tests()\n')
-        print #new line
+        print() #new line
 
     ############################################################################
     def finalize(self):

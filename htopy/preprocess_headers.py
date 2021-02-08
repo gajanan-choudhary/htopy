@@ -16,9 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import subprocess
-import StringIO
+try:
+    from StringIO import StringIO ## for Python 2
+except ImportError:
+    from io import StringIO ## for Python 3
 import re
 
 from htopy.colors import colorClass as color
@@ -42,9 +46,9 @@ def preprocess_C_comments(headerFile):
           stdout=subprocess.PIPE,
           shell=True).communicate()[0]
 
-  #print "Stripping comments from C header file:", headerFile
-  #print strippedHeaderFileContent
-  return StringIO.StringIO(strippedHeaderFileContent)
+  #print("Stripping comments from C header file:", headerFile)
+  #print(strippedHeaderFileContent)
+  return StringIO(strippedHeaderFileContent.decode('utf-8'))
 
 ################################################################################
 def process_spaces(line):
@@ -55,7 +59,7 @@ def process_spaces(line):
   """
   for j in range (30):
       line = re.sub('  ', ' ', line)
-  #print 'Stripped    : ', line
+  #print('Stripped    : ', line)
   return line.strip()
 
 ################################################################################
@@ -114,34 +118,34 @@ def process_commaline(line):
   nopencurlbracs=0
   #outline = outline + commasplit[0]
   i=0
-  #print 'commasplit: ', commasplit
+  #print('commasplit: ', commasplit)
   while (i<ncomma+1):
     if i==0: outline = outline + commasplit[i]
     else:    outline = outline + vartype + ' ' + commasplit[i]
     nopencurlbracs = nopencurlbracs + commasplit[i].count('{')
     nopencurlbracs = nopencurlbracs - commasplit[i].count('}')
-    #print i, nopencurlbracs, commasplit[i]
+    #print(i, nopencurlbracs, commasplit[i])
     if (nopencurlbracs!=0):
       i=i+1
       outline = outline + ',' + commasplit[i]
       nopencurlbracs = nopencurlbracs + commasplit[i].count('{')
       nopencurlbracs = nopencurlbracs - commasplit[i].count('}')
-      #print i, nopencurlbracs, commasplit[i]
+      #print(i, nopencurlbracs, commasplit[i])
       while (nopencurlbracs!=0):
         i=i+1
-        #print "Searching for closing bracket:", line
+        #print("Searching for closing bracket:", line)
         outline = outline + ',' + commasplit[i]
         nopencurlbracs = nopencurlbracs + commasplit[i].count('{')
         nopencurlbracs = nopencurlbracs - commasplit[i].count('}')
-        #print i, nopencurlbracs, commasplit[i]
+        #print(i, nopencurlbracs, commasplit[i])
     if i!=ncomma: outline = outline + ';\n'
     else:           outline = outline + '\n'
     i=i+1
-  #print 'line      :', line
-  #print 'equalsplit:', equalsplit
-  #print 'commasplit:', commasplit
-  #print 'wordsplit :', wordsplit
-  #print 'outline   :', outline
+  #print('line      :', line)
+  #print('equalsplit:', equalsplit)
+  #print('commasplit:', commasplit)
+  #print('wordsplit :', wordsplit)
+  #print('outline   :', outline)
   return outline
 
 ################################################################################
@@ -178,7 +182,7 @@ def preprocess_header_file(htopy_obj, hfile):
           writer.write(line+'\n')
           nopenbracs  = nopenbracs + line.count('(') - line.count(')')
           #nopencurlbracs  = nopencurlbracs + line.count('{') - line.count('}')
-          #print 'Writing asis: ', line
+          #print('Writing asis: ', line)
           line = buf.readline()
           continue
       elif (splitline[0]=='' and len(splitline)==1): # blank line
@@ -192,7 +196,7 @@ def preprocess_header_file(htopy_obj, hfile):
         writer.write(line+'\n')
         line = buf.readline()
         continue
-      #print 'Processing  : ', line
+      #print('Processing  : ', line)
 
       ##############################################################
       # Remove functions from C header file
@@ -204,7 +208,7 @@ def preprocess_header_file(htopy_obj, hfile):
       nopenbracs  = nopenbracs + line.count('(')
       if (nopenbracs==0 and nsemicolons==0 and line.count('{')==0):
         nopencurlbracs = nopencurlbracs - line.count('}')
-        if (nopenbracs < 0): print 'Weird line! ")" present without "("'
+        if (nopenbracs < 0): print('Weird line! ")" present without "("')
         line = line + ' ' + buf.readline().strip()
         nopenbracs = nopenbracs + line.count('(')
       if (nopenbracs>0): # Hopefully the only defining trait of a function definition?!
@@ -219,19 +223,19 @@ def preprocess_header_file(htopy_obj, hfile):
         nopencurlbracs = nopencurlbracs + line.count('{')
         if (nopencurlbracs==0 and nsemicolons==0):
           nopencurlbracs = nopencurlbracs - line.count('}')
-          if (nopencurlbracs < 0): print 'Weird line! "}" present without "{"'
+          if (nopencurlbracs < 0): print('Weird line! "}" present without "{"')
           line = buf.readline()
           nopencurlbracs = nopencurlbracs + line.count('{')
           if (nopencurlbracs==0):
             nopencurlbracs = nopencurlbracs - line.count('}')
-            if (nopencurlbracs < 0): print 'Weird line! "}" present without "{"'
+            if (nopencurlbracs < 0): print('Weird line! "}" present without "{"')
             continue
         if (nopencurlbracs>0): # Means a function has been defined
           nopencurlbracs = nopencurlbracs - line.count('}')
           while (nopencurlbracs!=0):
             line = buf.readline().strip()
             nopencurlbracs  = nopencurlbracs + line.count('{') - line.count('}')
-            #print "Searching for closing bracket:", line
+            #print("Searching for closing bracket:", line)
         line = buf.readline()
         continue
 
@@ -248,14 +252,14 @@ def preprocess_header_file(htopy_obj, hfile):
       commaline = re.split('[,]+', myline)
       if (len(commaline)!=1):
         # Tested manually
-        #print "Comma line  :", myline
+        #print("Comma line  :", myline)
         processedline = process_commaline(myline)
-        #print processedline
+        #print(processedline)
         writer.write(processedline)
         line = buf.readline()
         continue
 
-      #print 'Writing line: ', myline
+      #print('Writing line: ', myline)
       writer.write(myline+'\n')
       line = buf.readline()
 
@@ -274,9 +278,9 @@ def preprocess_all_files(htopy_obj):
       if (hfile.endswith(htopy_obj.inFileExtension)
               and not hfile.endswith(htopy_obj.interimFileExtension)):
 
-          print color.PURPLE+'Processing file: '+hfile+color.NONE #filename
+          print(color.PURPLE+'Processing file: '+hfile+color.NONE) #filename
           preprocess_header_file(htopy_obj, hfile)
-  print
+  print()
 
 ################################################################################
 

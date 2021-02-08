@@ -24,6 +24,7 @@ prepping the C header files with functions in the preprocess_headers
 module.
 """
 
+from __future__ import print_function
 import re
 
 from htopy.colors import colorClass as color
@@ -38,7 +39,7 @@ def unknown_line(line):
     """
 
     outputstring = '#UNKNOWN LINE: ' + line + ' #' + line
-    if (DEBUG>0): print 'Output     :', color.RED, outputstring + color.NONE
+    if (DEBUG>0): print('Output     :', color.RED, outputstring + color.NONE)
     return outputstring
 
 ################################################################################
@@ -48,7 +49,7 @@ def known_unsupported_line(line):
     """
 
     outputstring = '#KNOWN UNSUPPORTED LINE: ' + line + ' #' + line
-    if (DEBUG>0): print 'Output     :', color.CYAN, outputstring + color.NONE
+    if (DEBUG>0): print('Output     :', color.CYAN, outputstring + color.NONE)
     return outputstring
 
 ################################################################################
@@ -78,7 +79,7 @@ def get_ctypes_type(line, hi):
     if (splitline[0]=='struct'       or
             splitline[0]=='enum'     or
             splitline[0]=='unsigned' ):
-        if (DEBUG>1): print line.count("{"), line.count(";")
+        if (DEBUG>1): print(line.count("{"), line.count(";"))
         if (splitline[0]=='unsigned'): uflag = 'u'
         if (line.count('{')==0 and line.count(';')==1):
             # This would mean its a struct variable declaration.
@@ -89,9 +90,9 @@ def get_ctypes_type(line, hi):
     if (nstars>0): splitstar = re.split('\*', myline)
     else:          splitstar = re.split('[^a-zA-Z0-9_]',myline,1)
 
-    if (DEBUG>1): print '\nsplitline  : ', splitline
-    if (DEBUG>1): print 'splitstar  : ', splitstar
-    if (DEBUG>1): print 'Star count : ', nstars
+    if (DEBUG>1): print('\nsplitline  : ', splitline)
+    if (DEBUG>1): print('splitstar  : ', splitstar)
+    if (DEBUG>1): print('Star count : ', nstars)
 
     # Cannot handle lines with multiple semicolons.
     if (line.count(';')>1): return unknown_line(line)
@@ -120,7 +121,7 @@ def get_ctypes_type(line, hi):
                 re.split('[^a-zA-Z0-9#*_]+',splitline[1])[0]=='struct'):
             line = 'class (ctypes.Structure): \n    _fields_ = [    #' + line
 
-        if (DEBUG>0): print 'Output     :', color.YELLOW, line, color.NONE
+        if (DEBUG>0): print('Output     :', color.YELLOW, line, color.NONE)
         return line
 
     elif splitline[0] in hi.knownunsupportedtypes:
@@ -158,7 +159,7 @@ def get_ctypes_type(line, hi):
         ctypestring = 'ctypes.c_void_p'
     elif splitstar[i] in hi.template_datastructs:
         splitline = re.split('[^a-zA-Z0-9\*\_\[\]\=]+',splitline[1],1)
-        if (DEBUG>1): print 'splitline  : ', splitline
+        if (DEBUG>1): print('splitline  : ', splitline)
         ctypestring = splitstar[i]+'_'+splitline[0]
         #ctypestring = splitstar[i]+'_'+re.split('[^a-zA-Z0-9_]',splitline[0])[1]
     elif splitstar[i] in hi.voidpointertypes:
@@ -185,9 +186,9 @@ def get_ctypes_type(line, hi):
     if (nopeningbrackets != nclosingbrackets):
         return unknown_line(line)
     bracketline = re.split('[^a-zA-Z0-9_#*{}]+', splitline[i])
-    if (DEBUG>1): print 'bracketline: ', bracketline
-    if (DEBUG>1): print 'bracketcnt : ', nopeningbrackets, \
-                        '"[" and', nclosingbrackets, '"]"'
+    if (DEBUG>1): print('bracketline: ', bracketline)
+    if (DEBUG>1): print('bracketcnt : ', nopeningbrackets, \
+                        '"[" and', nclosingbrackets, '"]"')
 
     # If you are here, you are hopefully a proper variable.
     ctypesvar = bracketline[0]
@@ -209,7 +210,7 @@ def get_ctypes_type(line, hi):
 
     outputstring = outputstring + stringendpart
 
-    if (DEBUG>0): print 'Output     :', outputcolor, outputstring + color.NONE
+    if (DEBUG>0): print('Output     :', outputcolor, outputstring + color.NONE)
     return outputstring
 
 ################################################################################
