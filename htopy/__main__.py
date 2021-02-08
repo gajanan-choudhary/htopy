@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 import importlib
@@ -53,17 +54,13 @@ def main():
     ######################
     print(gpl_print)
 
-    if sys.version_info<(2,7,0) or sys.version_info>(2,9,9):
-        sys.stderr.write("You need python 2.7+ (not 3+) to run this project\n")
-        sys.exit(1)
-
     try:
         args = parse_args()
     except:
         sys.stderr.write("Error while parsing command line arguments.\n")
         sys.exit(1)
 
-    print
+    print()
 
     ######################
     htopy_obj = Htopy()

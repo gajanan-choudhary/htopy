@@ -21,7 +21,7 @@ import unittest
 from .context import htopy
 from htopy import process_headers
 
-from testinputs import htopy_input_test_get_ctypes_type as htopy_input
+from .testinputs import htopy_input_test_get_ctypes_type as htopy_input
 
 ################################################################################
 LOCALDEBUG = 0

@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import sys
 
@@ -24,7 +25,7 @@ def check_if_file_exists(filename, filepath):
     """Check if file exists and is a file."""
     #currentpath = os.getcwd()
     fullpath = os.path.join(filepath, filename)
-    print "Checking for existence of", fullpath
+    print("Checking for existence of", fullpath)
 
     if not os.path.exists(fullpath):
         sys.stderr.write("Specified file does not exist.\n")
@@ -33,8 +34,8 @@ def check_if_file_exists(filename, filepath):
         sys.stderr.write("Specified filename does not appear to be a file.\n")
         sys.exit(1)
     else:
-        print 'Input file', filename, 'found at the above path'
-        print 'Variables supplied in that file will be used as input to htopy.'
+        print('Input file', filename, 'found at the above path')
+        print('Variables supplied in that file will be used as input to htopy.')
 
 ################################################################################
 def import_htopy_input(filename, filepath):
