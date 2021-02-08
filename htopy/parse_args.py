@@ -92,10 +92,6 @@ def parse_args():
 
 ################################################################################
 if __name__=="__main__":
-    if sys.version_info<(2,7,0) or sys.version_info>(2,9,9):
-        sys.stderr.write("You need python 2.7+ (not 3+) to run this project\n")
-        sys.exit(1)
-
     try:
         args = parse_args()
         print(args)

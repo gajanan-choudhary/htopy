@@ -20,8 +20,8 @@ what data structures and functions they wish to wrap.
 ## Setup
 ### Dependencies
 * Bash
-* GCC -- for now; workaround is possibly easy: Change the compiler in the bash script.
-* Python 2.7 -- for now; hopefully we'll make it 3-compatible later.
+* GCC -- for now; workaround is possibly easy: Change the compiler in the bash
+  script.
 
 ### Usage
 Create and maintain an input file named `htopy_input.py` for use with `htopy`.
